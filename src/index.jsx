@@ -3,18 +3,49 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Square extends React.Component {
+
     render() {
         return (
-            <button className="square">
-                {/* TODO */}
+            <button
+                className="square"
+                onClick={this.props.onClick}
+            >
+                {this.props.value}
             </button>
         );
     }
+
 }
 
 class Board extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null),
+            value: 'X',
+        };
+    }
+
+    toggleValue() {
+        let value = this.state.value === 'X' ? 'O' : 'X';
+        this.setState({ value });
+    }
+
+    handleClick(i) {
+        const squares = [...this.state.squares];
+        squares[i] = this.state.value;
+        this.setState({ squares });
+        this.toggleValue();
+    }
+
     renderSquare(i) {
-        return <Square />;
+        return (
+            <Square
+                value={this.state.squares[i]}
+                onClick={() => this.handleClick(i)}
+            />
+        );
     }
 
     render() {
@@ -41,9 +72,11 @@ class Board extends React.Component {
             </div>
         );
     }
+
 }
 
 class Game extends React.Component {
+
     render() {
         return (
             <div className="game">
@@ -57,11 +90,13 @@ class Game extends React.Component {
             </div>
         );
     }
+
 }
 
-// ========================================
+// ReactDOM render:
 
-ReactDOM.render(
-    <Game />,
-    document.getElementById('root')
-);
+ReactDOM
+    .render(
+        <Game />,
+        document.getElementById('root')
+    );
