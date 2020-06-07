@@ -25,16 +25,15 @@ class Board extends React.Component {
 
     handleClick(i) {
         const squares = [...this.state.squares];
-        if (squares[i] === null) {
-            squares[i] =
-                this.state.xIsNext
-                    ? "X"
-                    : "O";
-            let xIsNext = !this.state.xIsNext;
-            this.setState({ squares, xIsNext });
-        } else {
-            alert("Square already taken!");
-        }
+
+        if (calculateWinner(squares) || squares[i]) return;
+
+        squares[i] =
+            this.state.xIsNext
+                ? "X"
+                : "O";
+        let xIsNext = !this.state.xIsNext;
+        this.setState({ squares, xIsNext });
     }
 
     renderSquare(i) {
@@ -47,7 +46,11 @@ class Board extends React.Component {
     }
 
     render() {
-        const status = `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
+        const winner = calculateWinner(this.state.squares);
+        const status =
+            winner
+                ? `WINNER: ${winner}`
+                : `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
 
         return (
             <div>
@@ -98,3 +101,24 @@ ReactDOM
         <Game />,
         document.getElementById('root')
     );
+
+function calculateWinner(squares) {
+    const lineCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+    ];
+
+    for (let i = 0; i < lineCombinations.length; i++) {
+        const [a, b, c] = lineCombinations[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return squares[a];
+        }
+    }
+
+}
