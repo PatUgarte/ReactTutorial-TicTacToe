@@ -92,8 +92,9 @@ class Game extends React.Component {
     }
 
     render() {
-        const history = this.state.history;
-        const current = history[this.state.stepNumber];
+        const stepNumber = this.state.stepNumber;
+        const history = this.state.history.slice(0, stepNumber + 1);
+        const current = history[stepNumber];
         const winner = calculateWinner(current.squares);
         const moves = history.map((step, move) => {
             const desc =
@@ -103,7 +104,7 @@ class Game extends React.Component {
             return (
                 <li key={move}>
                     <button onClick={() => this.jumpTo(move)}>
-                        {desc}
+                        {move === stepNumber && winner ? `Final Result` : desc}
                     </button>
                 </li>
             );
@@ -111,7 +112,9 @@ class Game extends React.Component {
         const status =
             winner
                 ? `WINNER: ${winner}`
-                : `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
+                : stepNumber === 9
+                    ? `IT'S A TIE!`
+                    : `Next player: ${this.state.xIsNext ? 'X' : 'O'}`;
 
         return (
             <div className="game">
