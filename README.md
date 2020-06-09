@@ -3,7 +3,7 @@
 #### You can follow up this tutorial [here](https://reactjs.org/tutorial/).
 
 ## I keep improving the project with:
-* ### Applying extra funtionalities.
+* ### Extra funtionalities.
 * ### Modifing Styles.
 * ### Modularizing React Components and Styles.
 * ### Adding Responsiveness.
